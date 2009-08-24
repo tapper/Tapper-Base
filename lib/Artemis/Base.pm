@@ -3,9 +3,14 @@ package Artemis::Base;
 use warnings;
 use strict;
 
+use Moose;
+
+with 'MooseX::Log::Log4perl';
+
+
 =head1 NAME
 
-Artemis::Base - The great new Artemis::Base!
+Artemis::Base - Common functions for all Artemis classes
 
 =head1 VERSION
 
@@ -13,40 +18,61 @@ Version 0.01
 
 =cut
 
-our $VERSION = '0.01';
+our $VERSION = '0.010001';
 
 
 =head1 SYNOPSIS
 
-Quick summary of what the module does.
+Currently, only an OO interface is implemented. Non-OO will follow when needed.
 
-Perhaps a little code snippet.
+ use Artemis::Base;
+ use Moose;
 
-    use Artemis::Base;
+ extends 'Artemis::Base';
 
-    my $foo = Artemis::Base->new();
-    ...
-
-=head1 EXPORT
-
-A list of functions that can be exported.  You can delete this section
-if you don't export anything, such as for a purely object-oriented module.
 
 =head1 FUNCTIONS
 
-=head2 function1
+
+=head2 log_and_exec
+
+Execute a given command. Make sure the command is logged if requested and none
+of its output pollutes the console. In scalar context the function returns 0
+for success and the output of the command on error. In array context the
+function always return a list containing the return value of the command and
+the output of the command.
+
+@param string - command
+
+@return success - 0
+@return error   - error string
+@returnlist success - (0, output)
+@returnlist error   - (return value of command, output)
 
 =cut
 
-sub function1 {
+sub log_and_exec
+{
+        my ($self, @cmd) = @_;
+        my $cmd = join " ",@cmd;
+        $self->log->debug( $cmd );
+        my $output=`$cmd 2>&1`;
+        my $retval=$?;
+        if (not defined($output)) {
+                $output = "Executing $cmd failed";
+                $retval = 1;
+        }
+        chomp $output if $output;
+        if ($retval) {
+                return ($retval >> 8, $output) if wantarray;
+                return $output;
+        }
+        return (0, $output) if wantarray;
+        return 0;
 }
 
-=head2 function2
 
-=cut
 
-sub function2 {
-}
 
 =head1 AUTHOR
 
@@ -57,38 +83,6 @@ OSRC SysInt Team, C<< <osrc-sysint at elbe.amd.com> >>
 Please report any bugs or feature requests to C<bug-artemis-base at rt.cpan.org>, or through
 the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Artemis-Base>.  I will be notified, and then you'll
 automatically be notified of progress on your bug as I make changes.
-
-
-
-
-=head1 SUPPORT
-
-You can find documentation for this module with the perldoc command.
-
-    perldoc Artemis::Base
-
-
-You can also look for information at:
-
-=over 4
-
-=item * RT: CPAN's request tracker
-
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Artemis-Base>
-
-=item * AnnoCPAN: Annotated CPAN documentation
-
-L<http://annocpan.org/dist/Artemis-Base>
-
-=item * CPAN Ratings
-
-L<http://cpanratings.perl.org/d/Artemis-Base>
-
-=item * Search CPAN
-
-L<http://search.cpan.org/dist/Artemis-Base/>
-
-=back
 
 
 =head1 ACKNOWLEDGEMENTS
