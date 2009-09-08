@@ -72,6 +72,67 @@ sub log_and_exec
 }
 
 
+=head2 atomic_write
+
+Writes given content to a given file and handles multiple access to this file
+correctly. In case content can not be written immediately it blocks until
+writing is possible. Starvation is not prevented.
+Note: does not protect against clashes with nonatomic writes.
+
+@param string - file name
+@param string - file content
+
+@param success - 0
+@param error   - error string
+
+=cut
+
+sub atomic_write
+{
+        my ($filename, $content) = @_;
+        my $error = 0;
+        while (sysopen(my $tmp , $filename.".lock", O_EXCL) != 0) {
+                sleep 1;
+        }
+        {
+                open(my $fh, ">", $filename) or $error = "Can't open $filename: $!",last;
+                print $fh $content or $error = "Can't write to $filename: $!",close $fh, last;
+                close $fh or $error = "Can't open $filename: $!",last;
+        }
+        close $tmp;
+        unlink "$filename.lock";
+}
+
+=head2 atomic_read
+
+Reads content from a file if and only if noone is currently writing this
+file. Find error in $! if reading does not succeed. 
+Note: does not protect against clashes with nonatomic writes.
+
+@param string - file name
+
+@param success - content (string)
+@param error   - undef (see $!)
+
+=cut
+
+sub atomic_read
+{
+        my ($filename) = @_;
+        my $error = 0;
+        while (sysopen(my $tmp , $filename.".lock", O_EXCL) != 0) {
+                sleep 1;
+        }
+        {
+                open(my $fh, "<", $filename) or $error = "Can't open $filename: $!",last;
+                local $\;
+                $content = <$fh>;
+                close $fh or $error = "Can't open $filename: $!",last;
+        }
+        close $tmp;
+        unlink "$filename.lock";
+}
+
 
 
 =head1 AUTHOR
