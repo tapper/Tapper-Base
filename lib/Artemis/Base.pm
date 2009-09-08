@@ -4,6 +4,7 @@ use warnings;
 use strict;
 
 use Moose;
+use Fcntl;
 
 with 'MooseX::Log::Log4perl';
 
@@ -18,7 +19,7 @@ Version 0.01
 
 =cut
 
-our $VERSION = '0.010002';
+our $VERSION = '0.010003';
 
 
 =head1 SYNOPSIS
@@ -89,9 +90,10 @@ Note: does not protect against clashes with nonatomic writes.
 
 sub atomic_write
 {
-        my ($filename, $content) = @_;
+        my ($self, $filename, $content) = @_;
         my $error = 0;
-        while (sysopen(my $tmp , $filename.".lock", O_EXCL) != 0) {
+        my $tmp_fh;
+        while (sysopen($tmp_fh, $filename.".lock", O_EXCL)) {
                 sleep 1;
         }
         {
@@ -99,8 +101,9 @@ sub atomic_write
                 print $fh $content or $error = "Can't write to $filename: $!",close $fh, last;
                 close $fh or $error = "Can't open $filename: $!",last;
         }
-        close $tmp;
+        close $tmp_fh;
         unlink "$filename.lock";
+        return $error;
 }
 
 =head2 atomic_read
@@ -118,19 +121,20 @@ Note: does not protect against clashes with nonatomic writes.
 
 sub atomic_read
 {
-        my ($filename) = @_;
-        my $error = 0;
-        while (sysopen(my $tmp , $filename.".lock", O_EXCL) != 0) {
+        my ($self, $filename) = @_;
+        my ($content, $tmp_fh);
+        while (sysopen($tmp_fh, $filename.".lock", O_EXCL) != 0) {
                 sleep 1;
         }
         {
-                open(my $fh, "<", $filename) or $error = "Can't open $filename: $!",last;
+                open(my $fh, "<", $filename) or last;
                 local $\;
                 $content = <$fh>;
-                close $fh or $error = "Can't open $filename: $!",last;
+                close $fh or $content = undef, last;
         }
-        close $tmp;
+        close $tmp_fh;
         unlink "$filename.lock";
+        return $content;
 }
 
 
