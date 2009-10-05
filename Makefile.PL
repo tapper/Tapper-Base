@@ -10,6 +10,7 @@ build_requires 'Test::More';
 requires 'Fcntl';
 
 auto_install;
+setup_deploy;
 
 WriteAll;
 

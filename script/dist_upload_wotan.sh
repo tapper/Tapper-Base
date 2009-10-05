@@ -2,9 +2,12 @@
 
 EXECDIR=$(dirname $0)
 DISTFILES='Artemis*-*.*.tar.gz '
-$EXECDIR/../../Artemis/scripts/artemis_version_increment.pl $EXECDIR/../lib/Artemis/Base.pm
-cd $EXECDIR/..
 
+if [[ "$1" == "dist" ]]; then
+    $EXECDIR/../../Artemis-Base/script/artemis_version_increment.pl $EXECDIR/../lib/Artemis/Base.pm
+fi
+
+cd $EXECDIR/..
 if [[ -e MANIFEST ]]
 then
   rm MANIFEST
@@ -27,5 +30,5 @@ rsync -vv --progress --ignore-existing ${DISTFILES} artemis@wotan:/home/artemis/
 
 echo ""
 echo '----- re-index -------------------------------------------------'
-ssh artemis@wotan /home/artemis/perl510/bin/cpansite -vl index /home/artemis/CPANSITE/CPAN/
-ssh artemis@wotan 'echo "/home/artemis/perl510/bin/cpansite install Artemis::Base" | bash -l'
+ssh artemis@wotan /home/artemis/perl510/bin/cpansite -vv --site=/home/artemis/CPANSITE/CPAN --cpan=ftp://ftp.fu-berlin.de/unix/languages/perl/ index
+ssh artemis@wotan /home/artemis/perl510/bin/cpan Artemis::Base
