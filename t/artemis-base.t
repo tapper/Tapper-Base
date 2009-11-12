@@ -13,7 +13,7 @@ log4perl.appender.root.layout = SimpleLayout";
 Log::Log4perl->init(\$string);
 
 
-use Test::More tests => 2;
+use Test::More;
 
 package Foo::Test;
 use Moose;
@@ -37,7 +37,14 @@ is($retval, 0, 'Log_and_exec in scalar context');
 
 my $ft = File::Temp->new();
 my $filename = $ft->filename;
-my $content = "first line\nsecond line\n\tthird line\n";
+my $content = "5";
 
 $retval = $test->atomic_write($filename, $content);
 is($retval, 0, 'Atomic write');
+
+my $error;
+($error, $retval) = $test->atomic_decrement($filename);
+is($error, 0, 'Decrement without error');
+is($retval, 4, 'Decremented value');
+
+done_testing();
