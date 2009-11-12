@@ -8,6 +8,7 @@ license  'perl';
 build_requires 'Test::More';
 
 requires 'Fcntl';
+requires 'LockFile::Simple';
 
 auto_install;
 setup_deploy;
