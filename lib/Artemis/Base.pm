@@ -5,6 +5,7 @@ use strict;
 
 use Moose;
 use Fcntl;
+use LockFile::Simple;
 
 with 'MooseX::Log::Log4perl';
 
@@ -138,6 +139,47 @@ sub atomic_read
 }
 
 
+=head2 atomic_decrement
+
+Decrement the value in the given file, return the decremented value.
+
+@return success                - ( 0, int)    - decremented value
+@return locked and nonblocking - (-1, undef)  - error string
+@return error                  - ( 1, string) - error string
+
+=cut
+
+sub atomic_decrement
+{
+        my ($self, $filename, $blocking) = @_;
+        my ($content, $tmp_fh);
+        my $lockmgr = LockFile::Simple->make(-format => '%f.lck', -nfs => 1, stale => 1, autoclean => 1);
+
+        if ($blocking) {
+                $lockmgr->lock($filename) or return (1, "Can not lock $filename: $!");
+        } else {
+                $lockmgr->trylock($filename) or return (-1, undef);
+        }
+
+        {
+                open(my $fh, "<", $filename) or last;
+                local $\;
+                $content = <$fh>;
+                chomp $content;
+                close $fh;
+        }
+
+        return (1, "File does not contain only a number") if not $content =~/^\d+$/;
+        $content--;
+        {
+                open(my $fh, ">", $filename) or last;
+                local $\;
+                print $fh ($content);
+                close $fh;
+        }
+        $lockmgr->unlock($filename);
+        return (0, $content);
+}
 
 =head1 AUTHOR
 
