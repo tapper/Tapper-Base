@@ -124,7 +124,7 @@ sub atomic_read
 {
         my ($self, $filename) = @_;
         my ($content, $tmp_fh);
-        while (sysopen($tmp_fh, $filename.".lock", O_EXCL) != 0) {
+        while (sysopen($tmp_fh, $filename.".lock", O_CREAT | O_EXCL) != 0) {
                 sleep 1;
         }
         {
