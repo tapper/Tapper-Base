@@ -9,6 +9,7 @@ build_requires 'Test::More';
 
 requires 'Fcntl';
 requires 'LockFile::Simple';
+requires 'MooseX::Log::Log4perl';
 
 auto_install;
 setup_deploy;
