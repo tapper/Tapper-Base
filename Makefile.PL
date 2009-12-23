@@ -12,7 +12,15 @@ requires 'LockFile::Simple';
 requires 'MooseX::Log::Log4perl';
 
 auto_install;
-setup_deploy;
+
+postamble("
+
+live:
+\t./scripts/dist_upload_wotan.sh
+\tssh artemis\@bancroft \"/opt/artemis/bin/cpan Artemis::BaseCLI\"
+
+devel: install
+");
 
 WriteAll;
 
