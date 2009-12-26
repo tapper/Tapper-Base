@@ -16,8 +16,8 @@ auto_install;
 postamble("
 
 live:
-\t./scripts/dist_upload_wotan.sh
-\tssh artemis\@bancroft \"/opt/artemis/bin/cpan Artemis::BaseCLI\"
+\t./script/dist_upload_wotan.sh dist
+\tssh artemis\@bancroft \"/opt/artemis/bin/cpan Artemis::Base\"
 
 devel: install
 ");
