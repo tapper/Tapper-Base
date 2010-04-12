@@ -36,6 +36,31 @@ Currently, only an OO interface is implemented. Non-OO will follow when needed.
 =head1 FUNCTIONS
 
 
+=head2 makedir
+
+Checks whether a given directory exists and creates it if not.
+
+@param string - directory to create
+
+@return success - 0
+@return error   - error string
+
+=cut 
+
+sub makedir
+{
+        my ($self, $dir) = @_;
+        return 0 if -d $dir;
+        if (-e $dir and not -d $dir) {
+                unlink $dir;
+        }
+        system("mkdir","-p",$dir) == 0 or return "Can't create $dir:$!";
+        return 0;
+}
+
+
+=cut
+
 =head2 log_and_exec
 
 Execute a given command. Make sure the command is logged if requested and none
