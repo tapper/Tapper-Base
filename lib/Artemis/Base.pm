@@ -1,11 +1,14 @@
 package Artemis::Base;
 
-use warnings;
-use strict;
 
 use Moose;
 use Fcntl;
 use LockFile::Simple;
+
+use common::sense;
+
+
+use 5.010;
 
 with 'MooseX::Log::Log4perl';
 
