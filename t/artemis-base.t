@@ -47,4 +47,21 @@ my $error;
 is($error, 0, 'Decrement without error');
 is($retval, 4, 'Decremented value');
 
+$test = Artemis::Base->new();
+$ft = File::Temp->new();
+$filename = $ft->filename;
+
+local $SIG{CHLD} = 'IGNORE';
+
+$retval = $test->run_one({command  => "t/misc_files/sleep.sh",
+                          pid_file => $filename,
+                          argv     => [ 100 ]});
+is($retval, 0, 'Run_one sleep without error');
+
+$retval = $test->run_one({command => "t/misc_files/sleep.sh",
+                          pid_file => $filename,
+                          argv    => [ 1 ]});
+is($retval, 0, 'Run_one second sleep without error');
+
+
 done_testing();
