@@ -18,7 +18,7 @@ postamble("
 
 live:
 \t./script/dist_upload_wotan.sh dist
-\tssh artemis\@bancroft \"/opt/artemis/bin/cpan Artemis::Base\"
+\tssh artemis\@bancroft \"sudo /opt/artemis/bin/cpan Artemis::Base\"
 
 devel: install
 ");
