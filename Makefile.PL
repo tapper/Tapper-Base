@@ -7,6 +7,7 @@ license  'perl';
 
 build_requires 'Test::More';
 
+requires 'common::sense';
 requires 'Fcntl';
 requires 'LockFile::Simple';
 requires 'MooseX::Log::Log4perl';
