@@ -23,7 +23,7 @@ Version 0.01
 
 =cut
 
-our $VERSION = '0.010010';
+our $VERSION = '0.010013';
 
 
 =head1 SYNOPSIS
@@ -38,6 +38,56 @@ Currently, only an OO interface is implemented. Non-OO will follow when needed.
 
 =head1 FUNCTIONS
 
+=head2 run_one
+
+Run one instance of the given command. Kill previous incarnations if necessary.
+
+@param hash ref - {command  => command to execute,
+                   pid_file => pid file containing the ID of last incarnation,
+                   argv     => array ref containg (optional) arguments}
+
+
+@return success - 0
+@return error   - error string
+
+=cut
+
+sub run_one
+{
+        my ($self, $conf) = @_;
+
+        my $command  = $conf->{command};
+        my $pid_file = $conf->{pid_file};
+        my @argv     = @{$conf->{argv} // [] } ;
+
+        # try to kill previous incarnations
+        if ((-e $pid_file) and open(my $fh, "<", $pid_file)) {{
+                my $pid = do {local $\; <$fh>}; # slurp
+                ($pid) = $pid =~ m/(\d+)/;
+                last unless $pid;
+                kill 15, $pid;
+                sleep(2);
+                kill 9, $pid;
+                close $fh;
+        }}
+
+        return qq(Can not execute "$command" because it's not an executable) unless -x $command;
+        my $pid = fork();
+        return qq(Can not execute "$command". Fork failed: $!) unless defined $pid;
+
+        if ($pid == 0) {
+                exec $command, @argv;
+                exit 0;
+        }
+
+        return 0 unless $pid_file;
+        open(my $fh, ">", $pid_file) or return qq(Can not open "$pid_file" for pid $pid:$!);
+        print $fh $pid;
+        close $fh;
+        return 0;
+}
+
+
 
 =head2 makedir
 
@@ -48,7 +98,7 @@ Checks whether a given directory exists and creates it if not.
 @return success - 0
 @return error   - error string
 
-=cut 
+=cut
 
 sub makedir
 {
@@ -138,7 +188,7 @@ sub atomic_write
 =head2 atomic_read
 
 Reads content from a file if and only if noone is currently writing this
-file. Find error in $! if reading does not succeed. 
+file. Find error in $! if reading does not succeed.
 Note: does not protect against clashes with nonatomic writes.
 
 @param string - file name
