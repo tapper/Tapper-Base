@@ -23,7 +23,7 @@ Version 0.01
 
 =cut
 
-our $VERSION = '0.010013';
+our $VERSION = '0.010014';
 
 
 =head1 SYNOPSIS
@@ -37,6 +37,35 @@ Currently, only an OO interface is implemented. Non-OO will follow when needed.
 
 
 =head1 FUNCTIONS
+
+=head2 kill_instance
+
+Kill the process whose id is in the given pidfile.
+
+@param string - pid file name
+
+@return success - 0
+@return error   - error string
+
+=cut
+
+sub kill_instance
+{
+        my ($self, $pid_file) = @_;
+
+        # try to kill previous incarnations
+        if ((-e $pid_file) and open(my $fh, "<", $pid_file)) {{
+                my $pid = do {local $\; <$fh>}; # slurp
+                ($pid) = $pid =~ m/(\d+)/;
+                last unless $pid;
+                kill 15, $pid;
+                sleep(2);
+                kill 9, $pid;
+                close $fh;
+        }}
+        return 0;
+
+}
 
 =head2 run_one
 
@@ -60,16 +89,7 @@ sub run_one
         my $pid_file = $conf->{pid_file};
         my @argv     = @{$conf->{argv} // [] } ;
 
-        # try to kill previous incarnations
-        if ((-e $pid_file) and open(my $fh, "<", $pid_file)) {{
-                my $pid = do {local $\; <$fh>}; # slurp
-                ($pid) = $pid =~ m/(\d+)/;
-                last unless $pid;
-                kill 15, $pid;
-                sleep(2);
-                kill 9, $pid;
-                close $fh;
-        }}
+        $self->kill_instance($pid_file);
 
         return qq(Can not execute "$command" because it's not an executable) unless -x $command;
         my $pid = fork();
