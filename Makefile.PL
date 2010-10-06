@@ -15,14 +15,6 @@ requires 'MooseX::Log::Log4perl';
 
 auto_install;
 
-postamble("
-
-live:
-\t./script/dist_upload_wotan.sh dist
-\tssh artemis\@bancroft \"sudo /opt/artemis/bin/cpan Artemis::Base\"
-
-devel: install
-");
 
 WriteAll;
 
