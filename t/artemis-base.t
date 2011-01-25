@@ -37,19 +37,8 @@ is($retval, 0, 'Log_and_exec in scalar context');
 
 my $ft = File::Temp->new();
 my $filename = $ft->filename;
-my $content = "5";
-
-$retval = $test->atomic_write($filename, $content);
-is($retval, 0, 'Atomic write');
-
-my $error;
-($error, $retval) = $test->atomic_decrement($filename);
-is($error, 0, 'Decrement without error');
-is($retval, 4, 'Decremented value');
 
 $test = Artemis::Base->new();
-$ft = File::Temp->new();
-$filename = $ft->filename;
 
 local $SIG{CHLD} = 'IGNORE';
 
