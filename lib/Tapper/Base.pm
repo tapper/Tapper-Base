@@ -1,4 +1,4 @@
-package Artemis::Base;
+package Tapper::Base;
 
 
 use Moose;
@@ -15,7 +15,7 @@ with 'MooseX::Log::Log4perl';
 
 =head1 NAME
 
-Artemis::Base - Common functions for all Artemis classes
+Tapper::Base - Common functions for all Tapper classes
 
 =head1 VERSION
 
@@ -30,10 +30,10 @@ our $VERSION = '0.010019';
 
 Currently, only an OO interface is implemented. Non-OO will follow when needed.
 
- use Artemis::Base;
+ use Tapper::Base;
  use Moose;
 
- extends 'Artemis::Base';
+ extends 'Tapper::Base';
 
 
 =head1 FUNCTIONS
@@ -178,8 +178,8 @@ OSRC SysInt Team, C<< <osrc-sysint at elbe.amd.com> >>
 
 =head1 BUGS
 
-Please report any bugs or feature requests to C<bug-artemis-base at rt.cpan.org>, or through
-the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Artemis-Base>.  I will be notified, and then you'll
+Please report any bugs or feature requests to C<bug-tapper-base at rt.cpan.org>, or through
+the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Tapper-Base>.  I will be notified, and then you'll
 automatically be notified of progress on your bug as I make changes.
 
 
@@ -196,4 +196,4 @@ under the same terms as Perl itself.
 
 =cut
 
-1; # End of Artemis::Base
+1; # End of Tapper::Base

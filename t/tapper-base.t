@@ -18,8 +18,8 @@ use Test::More;
 package Foo::Test;
 use Moose;
 
-use Artemis::Base;
-extends 'Artemis::Base';
+use Tapper::Base;
+extends 'Tapper::Base';
 
 # want to test OO interface thus we need a separate class since Moose doesn't
 # offer it's tricks to main
@@ -38,7 +38,7 @@ is($retval, 0, 'Log_and_exec in scalar context');
 my $ft = File::Temp->new();
 my $filename = $ft->filename;
 
-$test = Artemis::Base->new();
+$test = Tapper::Base->new();
 
 local $SIG{CHLD} = 'IGNORE';
 

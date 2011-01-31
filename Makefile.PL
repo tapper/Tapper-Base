@@ -1,7 +1,7 @@
 use inc::Module::Install;
 
-name     'Artemis-Base';
-all_from 'lib/Artemis/Base.pm';
+name     'Tapper-Base';
+all_from 'lib/Tapper/Base.pm';
 author   'OSRC SysInt Team <osrc-sysint@elbe.amd.com>';
 license  'freebsd';
 
