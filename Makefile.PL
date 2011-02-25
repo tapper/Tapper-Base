@@ -8,6 +8,8 @@ license  'freebsd';
 build_requires 'Test::More';
 build_requires 'Test::Perl::Critic';
 
+author_requires 'Module::Install::WriteAll';
+
 requires 'common::sense';
 requires 'Fcntl';
 requires 'LockFile::Simple';
