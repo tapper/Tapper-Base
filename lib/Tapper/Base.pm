@@ -17,14 +17,9 @@ with 'MooseX::Log::Log4perl';
 
 Tapper::Base - Common functions for all Tapper classes
 
-=head1 VERSION
-
-Version 0.01
-
 =cut
 
-our $VERSION = '0.010019';
-
+our $VERSION = '3.000001';
 
 =head1 SYNOPSIS
 
