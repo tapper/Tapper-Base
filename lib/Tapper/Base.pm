@@ -15,7 +15,7 @@ with 'MooseX::Log::Log4perl';
 
 =head1 NAME
 
-Tapper::Base - Common functions for all Tapper classes
+Tapper::Base - Tapper - Common functions for all Tapper classes
 
 =cut
 
