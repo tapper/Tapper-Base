@@ -19,7 +19,7 @@ Tapper::Base - Tapper - Common functions for all Tapper classes
 
 =cut
 
-our $VERSION = '3.000001';
+our $VERSION = '3.000002';
 
 =head1 SYNOPSIS
 
