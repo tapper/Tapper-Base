@@ -20,5 +20,8 @@ requires 'MooseX::Log::Log4perl';
 
 auto_install;
 
+repository 'git://github.com/amd/Tapper-Base.git';
+bugtracker 'http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Tapper-Base';
+
 WriteAll;
 
