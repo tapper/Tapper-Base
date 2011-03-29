@@ -1,3 +1,6 @@
+use strict;
+use warnings;
+
 use inc::Module::Install;
 
 name     'Tapper-Base';
@@ -8,12 +11,17 @@ license  'freebsd';
 build_requires 'Test::More';
 build_requires 'Test::Perl::Critic';
 
+author_requires 'Module::Install::WriteAll';
+
 requires 'common::sense';
 requires 'Fcntl';
 requires 'LockFile::Simple';
 requires 'MooseX::Log::Log4perl';
 
 auto_install;
+
+repository 'git://github.com/amd/Tapper-Base.git';
+bugtracker 'http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Tapper-Base';
 
 WriteAll;
 

@@ -15,16 +15,11 @@ with 'MooseX::Log::Log4perl';
 
 =head1 NAME
 
-Tapper::Base - Common functions for all Tapper classes
-
-=head1 VERSION
-
-Version 0.01
+Tapper::Base - Tapper - Common functions for all Tapper classes
 
 =cut
 
-our $VERSION = '0.010019';
-
+our $VERSION = '3.000005';
 
 =head1 SYNOPSIS
 
@@ -174,7 +169,7 @@ sub log_and_exec
 
 =head1 AUTHOR
 
-OSRC SysInt Team, C<< <osrc-sysint at elbe.amd.com> >>
+AMD OSRC Tapper Team, C<< <tapper at amd64.org> >>
 
 =head1 BUGS
 
@@ -188,11 +183,9 @@ automatically be notified of progress on your bug as I make changes.
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2009 OSRC SysInt Team, all rights reserved.
+Copyright 2008-2011 AMD OSRC Tapper Team, all rights reserved.
 
-This program is free software; you can redistribute it and/or modify it
-under the same terms as Perl itself.
-
+This program is released under the following license: freebsd
 
 =cut
 

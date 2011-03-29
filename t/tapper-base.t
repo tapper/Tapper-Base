@@ -32,7 +32,7 @@ sub test_log_and_exec
 package main;
 
 my $test   = Foo::Test->new();
-my $retval = $test->test_log_and_exec('/bin/true');
+my $retval = $test->test_log_and_exec('true');
 is($retval, 0, 'Log_and_exec in scalar context');
 
 my $ft = File::Temp->new();
