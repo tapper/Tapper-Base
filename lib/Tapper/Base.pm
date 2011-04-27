@@ -23,13 +23,9 @@ our $VERSION = '3.000010';
 
 =head1 SYNOPSIS
 
-Currently, only an OO interface is implemented. Non-OO will follow when needed.
-
- use Tapper::Base;
+ package Tapper::Some::Class;
  use Moose;
-
  extends 'Tapper::Base';
-
 
 =head1 FUNCTIONS
 
