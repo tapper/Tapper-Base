@@ -7,6 +7,8 @@ license  'perl';
 
 build_requires 'Test::More';
 
+requires 'YAML::Syck' => 0;
+requires 'Tapper::Base';
 auto_install;
 
 WriteAll;
