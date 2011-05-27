@@ -1,0 +1,17 @@
+blib*
+Makefile.old
+Build
+_build*
+pm_to_blib*
+.lwpcookies
+Tapper-*
+cover_db
+MANIFEST.bak
+*.sqlite
+tapper_reportsdb_development.sqlite
+MANIFEST
+META.yml
+MYMETA.yml
+inc/
+Makefile
+
