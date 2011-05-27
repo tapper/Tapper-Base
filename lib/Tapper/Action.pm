@@ -1,51 +1,98 @@
 package Tapper::Action;
 
+use 5.010;
 use warnings;
 use strict;
 
+use Moose;
+use Tapper::Model 'model';
+use YAML::Syck 'Load';
+use Tapper::Config;
+
+extends 'Tapper::Base';
+
+has cfg => (is => 'rw', default => sub { Tapper::Config->subconfig} );
+
 =head1 NAME
 
-Tapper::Action - The great new Tapper::Action!
+Tapper::Action - Execute actions on request.
 
 =head1 VERSION
 
-Version 0.01
+Version 1.000001
 
 =cut
 
-our $VERSION = '0.01';
+our $VERSION = '1.000001';
 
 
 =head1 SYNOPSIS
 
-Quick summary of what the module does.
-
-Perhaps a little code snippet.
+There are a few actions that Tapper assigns to an external daemon. This
+includes for example restarting a test machine that went to sleep during
+ACPI tests. This module is the base for a daemon that executes these
+assignments.
 
     use Tapper::Action;
 
-    my $foo = Tapper::Action->new();
-    ...
+    my $daemon = Tapper::Action->new();
+    $daemon->run();
 
-=head1 EXPORT
-
-A list of functions that can be exported.  You can delete this section
-if you don't export anything, such as for a purely object-oriented module.
 
 =head1 FUNCTIONS
 
-=head2 function1
+=head2 get_messages
+
+Read all pending messages from database. Try no more than timeout seconds
+
+@return success - Resultset class countaining all available messages
 
 =cut
 
-sub function1 {
+sub get_messages
+{
+        my ($self) = @_;
+
+        my $messages;
+        while () {
+                $messages = model('TestrunDB')->resultset('Message')->search({type => 'action'});
+                last if ($messages and $messages->count);
+                sleep $self->cfg->{times}{action_poll_intervall} || 1;
+        }
+        return $messages;
 }
 
-=head2 function2
+
+=head2 run
+
+
 
 =cut
 
-sub function2 {
+sub run
+{
+        my ($self) = @_;
+
+ ACTION:
+        while (my $messages = $self->get_messages) {
+                while (my $message = $messages->next) {
+                        given($message->message->{action}){
+                                when ('reset')  {
+                                        $self->log->error("reset is not yet implemented")
+                                }
+                                when ('resume') {
+                                        my $host = $message->message->{host};
+                                        my $cmd  = $self->cfg->{actions}{resume};
+                                        $cmd    .= " $host";
+                                        my ($error, $retval) = $self->log_and_exec($cmd);
+                                }
+                                default         {
+                                        $self->log->error('Unknown action "'.$message->message->{action}.'"')
+                                }
+                        }
+                }
+        }
+        return;
 }
 
 =head1 AUTHOR
