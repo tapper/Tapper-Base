@@ -9,6 +9,9 @@ build_requires 'Test::More';
 
 requires 'YAML::Syck' => 0;
 requires 'Tapper::Base';
+requires 'Tapper::Config' => '3.000011';
+requires 'App::Daemon';
+requires 'Log::Log4perl';
 auto_install;
 
 WriteAll;
