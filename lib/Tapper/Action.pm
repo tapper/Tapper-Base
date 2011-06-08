@@ -8,7 +8,7 @@ use Moose;
 use Tapper::Model 'model';
 use YAML::Syck 'Load';
 use Tapper::Config;
-
+use Log::Log4perl;
 extends 'Tapper::Base';
 
 has cfg => (is => 'rw', default => sub { Tapper::Config->subconfig} );
@@ -72,6 +72,8 @@ sub get_messages
 sub run
 {
         my ($self) = @_;
+        Log::Log4perl->init($self->cfg->{files}{log4perl_cfg});
+
 
  ACTION:
         while (my $messages = $self->get_messages) {
