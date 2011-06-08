@@ -35,7 +35,10 @@ eval {
         $output =  `$EXECUTABLE_NAME -Ilib bin/tapper-action-daemon status`;
         like($output, qr/Running:\s+yes/, 'Daemon is running');
 
-        my $message = model('TestrunDB')->resultset('Message')->new({type => 'action', message => {action => 'resume', host => 'somehost'}});
+        my $message = model('TestrunDB')->resultset('Message')->new({type => 'action', message => {action => 'resume', 
+                                                                                                   host   => 'somehost',
+                                                                                                   after  => 0,
+                                                                                                  }});
         $message->insert;
         
         sleep 3; # give daemon time to work

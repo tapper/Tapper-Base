@@ -62,9 +62,36 @@ sub get_messages
         return $messages;
 }
 
+=head2 resume
+
+Handle the resume message.
+
+@param hash ref - message 
+
+=cut
+
+sub resume 
+{                                        
+        my ($self, $message) = @_;
+        $SIG{CHLD} = 'IGNORE';
+        my $pid = fork();
+        
+        $self->log->error("Can not fork: $!") if not defined $pid;
+        if ($pid == 0) {
+                my $host = $message->{host};
+                sleep( $message->{after} || $self->cfg->{action}{resume_default_sleeptime} || 0);
+                my $cmd  = $self->cfg->{actions}{resume};
+                $cmd    .= " $host";
+                my ($error, $retval) = $self->log_and_exec($cmd);
+                exit 0;
+        }
+        return;
+}
+
 
 =head2 run
 
+Run the Action daemon loop.
 
 
 =cut
@@ -83,10 +110,7 @@ sub run
                                         $self->log->error("reset is not yet implemented")
                                 }
                                 when ('resume') {
-                                        my $host = $message->message->{host};
-                                        my $cmd  = $self->cfg->{actions}{resume};
-                                        $cmd    .= " $host";
-                                        my ($error, $retval) = $self->log_and_exec($cmd);
+                                        $self->resume($message->message);
                                 }
                                 default         {
                                         $self->log->error('Unknown action "'.$message->message->{action}.'"')
