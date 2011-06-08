@@ -1,0 +1,14 @@
+#! perl
+
+use strict;
+use warnings;
+
+# TODO: redirect STDERR/STDOUT
+
+use Tapper::Action;
+use App::Daemon 'daemonize';
+$App::Daemon::as_user = "root";
+daemonize();
+my $action = new Tapper::Action;
+$action->run;
+

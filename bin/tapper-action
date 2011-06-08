@@ -1,0 +1,9 @@
+#! perl
+
+use strict;
+use warnings;
+
+use Tapper::Action;
+my $action = new Tapper::Action;
+$action->run;
+
