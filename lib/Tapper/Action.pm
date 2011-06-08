@@ -92,6 +92,7 @@ sub run
                                         $self->log->error('Unknown action "'.$message->message->{action}.'"')
                                 }
                         }
+                        $message->delete;
                 }
         }
         return;
