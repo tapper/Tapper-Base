@@ -14,5 +14,8 @@ requires 'App::Daemon';
 requires 'Log::Log4perl';
 auto_install;
 
+install_script glob('bin/*');
+
+
 WriteAll;
 
