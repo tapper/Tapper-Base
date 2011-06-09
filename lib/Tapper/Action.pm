@@ -6,25 +6,19 @@ use strict;
 
 use Moose;
 use Tapper::Model 'model';
-use YAML::Syck 'Load';
 use Tapper::Config;
+use YAML::Syck 'Load';
 use Log::Log4perl;
+
 extends 'Tapper::Base';
 
 has cfg => (is => 'rw', default => sub { Tapper::Config->subconfig} );
 
+our $VERSION = '3.000001';
+
 =head1 NAME
 
 Tapper::Action - Execute actions on request.
-
-=head1 VERSION
-
-Version 1.000001
-
-=cut
-
-our $VERSION = '3.000001';
-
 
 =head1 SYNOPSIS
 
@@ -45,7 +39,7 @@ assignments.
 
 Read all pending messages from database. Try no more than timeout seconds
 
-@return success - Resultset class countaining all available messages
+@return success - Resultset class containing all available messages
 
 =cut
 
@@ -62,37 +56,9 @@ sub get_messages
         return $messages;
 }
 
-=head2 resume
-
-Handle the resume message.
-
-@param hash ref - message 
-
-=cut
-
-sub resume 
-{                                        
-        my ($self, $message) = @_;
-        $SIG{CHLD} = 'IGNORE';
-        my $pid = fork();
-        
-        $self->log->error("Can not fork: $!") if not defined $pid;
-        if ($pid == 0) {
-                my $host = $message->{host};
-                sleep( $message->{after} || $self->cfg->{action}{resume_default_sleeptime} || 0);
-                my $cmd  = $self->cfg->{actions}{resume};
-                $cmd    .= " $host";
-                my ($error, $retval) = $self->log_and_exec($cmd);
-                exit 0;
-        }
-        return;
-}
-
-
 =head2 run
 
 Run the Action daemon loop.
-
 
 =cut
 
@@ -106,14 +72,25 @@ sub run
         while (my $messages = $self->get_messages) {
                 while (my $message = $messages->next) {
                         given($message->message->{action}){
-                                when ('reset')  {
-                                        $self->log->error("reset is not yet implemented")
-                                }
-                                when ('resume') {
-                                        $self->resume($message->message);
-                                }
-                                default         {
-                                        $self->log->error('Unknown action "'.$message->message->{action}.'"')
+
+                                my $action = $message->message->{action};
+                                my $plugin = $self->cfg->{action}{$action}{plugin};
+                                my $plugin_options = $self->cfg->{action}{$action}{plugin}{plugin_options};
+
+                                my $plugin_class = "Tapper::Action::Plugin::$action::$plugin";
+                                eval "use $plugin_class"; ## no critic
+
+                                if ($@) {
+                                        return "Could not load $plugin_class";
+                                } else {
+                                        no strict 'refs'; ## no critic
+                                        $self->log->info("Call ${plugin_class}::execute()");
+                                        my ($error, $retval) = &{"${plugin_class}::execute"}($self, $message, $plugin_options);
+                                        if ($error) {
+                                                $self->log->error("Error occured: ".$retval);
+                                                return $retval;
+                                        }
+                                        return 0;
                                 }
                         }
                         $message->delete;
