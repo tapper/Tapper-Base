@@ -29,6 +29,9 @@ Log::Log4perl->init(\$string);
 construct_fixture( schema  => testrundb_schema, fixture => 't/fixtures/testrundb/testrun_with_preconditions.yml' );
 # -----------------------------------------------------------------------------------------------------------------
 
+local $ENV{TAPPER_CONFIG_FILE} = "t/tapper.cfg";
+Tapper::Config->_switch_context();
+
 use_ok('Tapper::Action');
 
 my $output; 
