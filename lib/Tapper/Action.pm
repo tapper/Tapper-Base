@@ -82,11 +82,7 @@ sub run
                                         no strict 'refs'; ## no critic
                                         $self->log->info("Call ${plugin_class}::execute()");
                                         my ($error, $retval) = &{"${plugin_class}::execute"}($self, $message->message, $plugin_options);
-                                        if ($error) {
-                                                $self->log->error("Error occured: ".$retval);
-                                                return $retval;
-                                        }
-                                        return 0;
+                                        $self->log->error("Error occured: ".$retval) if $error;
                                 }
                         }
                         $message->delete;
