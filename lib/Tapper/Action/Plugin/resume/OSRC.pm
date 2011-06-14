@@ -25,7 +25,6 @@ Send "resume" signal to machine.
 
 sub execute
 {
-        my ($self, $options) = @_;
         my ($action, $message, $options) = @_;
 
         $SIG{CHLD} = 'IGNORE';

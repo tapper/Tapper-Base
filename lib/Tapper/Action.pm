@@ -67,17 +67,13 @@ sub run
         my ($self) = @_;
         Log::Log4perl->init($self->cfg->{files}{log4perl_cfg});
 
-
  ACTION:
         while (my $messages = $self->get_messages) {
                 while (my $message = $messages->next) {
-                        given($message->message->{action}){
-
-                                my $action = $message->message->{action};
-                                my $plugin = $self->cfg->{action}{$action}{plugin};
-                                my $plugin_options = $self->cfg->{action}{$action}{plugin}{plugin_options};
-
-                                my $plugin_class = "Tapper::Action::Plugin::$action::$plugin";
+                        if (my $action = $message->message->{action}) {
+                                my $plugin         = $self->cfg->{action}{$action}{plugin};
+                                my $plugin_options = $self->cfg->{action}{$action}{plugin_options};
+                                my $plugin_class   = "Tapper::Action::Plugin::${action}::${plugin}";
                                 eval "use $plugin_class"; ## no critic
 
                                 if ($@) {
@@ -85,7 +81,7 @@ sub run
                                 } else {
                                         no strict 'refs'; ## no critic
                                         $self->log->info("Call ${plugin_class}::execute()");
-                                        my ($error, $retval) = &{"${plugin_class}::execute"}($self, $message, $plugin_options);
+                                        my ($error, $retval) = &{"${plugin_class}::execute"}($self, $message->message, $plugin_options);
                                         if ($error) {
                                                 $self->log->error("Error occured: ".$retval);
                                                 return $retval;
