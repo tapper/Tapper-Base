@@ -35,13 +35,14 @@ eval {
         $output =  `$EXECUTABLE_NAME -Ilib bin/tapper-action-daemon status`;
         like($output, qr/Running:\s+yes/, 'Daemon is running');
 
-        my $message = model('TestrunDB')->resultset('Message')->new({type => 'action', message => {action => 'resume', 
+        my $message = model('TestrunDB')->resultset('Message')->new({type => 'action', message => {action => 'resume',
                                                                                                    host   => 'somehost',
                                                                                                    after  => 0,
                                                                                                   }});
         $message->insert;
         
-        sleep 3; # give daemon time to work
+        diag "Wait some seconds to give daemon time to work...";
+        sleep 10;
         if (-e "$dir/output") {
                 pass 'Output file for test script exists';
                 open my $fh, '<', "$dir/output";

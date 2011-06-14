@@ -33,9 +33,8 @@ sub execute
         $action->log->error("Can not fork: $!") if not defined $pid;
         if ($pid == 0) {
                 my $host = $message->{host};
-                sleep( $message->{after} || $action->cfg->{action}{resume_default_sleeptime} || 0);
-                my $cmd  = $action->cfg->{actions}{resume};
-                $cmd    .= " $host";
+                sleep( $message->{after} || $action->cfg->{action}{resume}{default_sleeptime} || 0);
+                my $cmd  = $options->{cmd} . " $host";
                 my ($error, $retval) = $action->log_and_exec($cmd);
                 exit 0;
         }
