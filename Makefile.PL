@@ -1,15 +1,20 @@
+use strict;
+use warnings;
+
 use inc::Module::Install;
 
 name     'Tapper-Action';
 all_from 'lib/Tapper/Action.pm';
-author   'OSRC SysInt Team <osrc-sysint@elbe.amd.com>';
-license  'perl';
+author   'AMD OSRC Tapper Team <tapper@amd64.org>';
+license  'freebsd';
+
+author_requires 'Module::Install::WriteAll';
 
 build_requires 'Test::More';
 
 requires 'YAML::Syck' => 0;
 requires 'Tapper::Base';
-requires 'Tapper::Config' => '3.000011';
+requires 'Tapper::Config' => '3.000010';
 requires 'App::Daemon';
 requires 'Log::Log4perl';
 auto_install;

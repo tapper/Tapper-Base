@@ -4,6 +4,6 @@ use strict;
 use warnings;
 
 use Tapper::Action;
-my $action = new Tapper::Action;
+my $action = Tapper::Action->new;
 $action->run;
 

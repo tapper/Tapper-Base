@@ -2,12 +2,12 @@ package Tapper::Action::Plugin::resume::OSRC;
 
 =head1 NAME
 
-Tapper::Action::Plugin::resume::OSRC - action plugin: resume / OSRC
+Tapper::Action::Plugin::resume::OSRC - action plugin - resume::OSRC
 
 =head1 ABOUT
 
-The Tapper action daemon accepts messages to execute actions.
-To execute the "resume" this plugin here handles that action for the OSRC.
+The Tapper action daemon accepts messages to execute actions. This
+plugin here handles the "resume" action specifically for the OSRC.
 
 =head1 FUNCTIONS
 
@@ -17,7 +17,7 @@ Send "resume" signal to machine.
 
 @param scalar - Tapper::Action instance
 
-@param hashref - message
+@param hashref - message details
 
 @param hashref - general plugin options
 

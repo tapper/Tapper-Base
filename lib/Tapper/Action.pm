@@ -14,11 +14,11 @@ extends 'Tapper::Base';
 
 has cfg => (is => 'rw', default => sub { Tapper::Config->subconfig} );
 
-our $VERSION = '3.000001';
+our $VERSION = '3.000011';
 
 =head1 NAME
 
-Tapper::Action - Execute actions on request.
+Tapper::Action - Tapper - Daemon and plugins to handle MCP actions
 
 =head1 SYNOPSIS
 
@@ -101,7 +101,7 @@ sub run
 
 =head1 AUTHOR
 
-OSRC SysInt Team, C<< <osrc-sysint at elbe.amd.com> >>
+AMD OSRC Tapper Team, C<< <tapper at amd64.org> >>
 
 =head1 BUGS
 
@@ -147,10 +147,9 @@ L<http://search.cpan.org/dist/Tapper-Action/>
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2011 OSRC SysInt Team, all rights reserved.
+Copyright 2011 AMD OSRC Tapper Team, all rights reserved.
 
-This program is free software; you can redistribute it and/or modify it
-under the same terms as Perl itself.
+This program is released under the following license: freebsd
 
 
 =cut
