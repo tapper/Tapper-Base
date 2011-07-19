@@ -36,6 +36,7 @@ sub execute
                 sleep( $message->{after} || $action->cfg->{action}{resume}{default_sleeptime} || 0);
                 my $cmd  = $options->{cmd} . " $host";
                 my ($error, $retval) = $action->log_and_exec($cmd);
+                $self->log->error($retval) if $error;
                 exit 0;
         }
         return;
