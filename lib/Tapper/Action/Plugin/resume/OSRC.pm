@@ -1,5 +1,8 @@
 package Tapper::Action::Plugin::resume::OSRC;
 
+use strict;
+use warnings;
+
 =head1 NAME
 
 Tapper::Action::Plugin::resume::OSRC - action plugin - resume::OSRC
