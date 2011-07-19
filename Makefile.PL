@@ -11,6 +11,7 @@ license  'freebsd';
 author_requires 'Module::Install::WriteAll';
 
 build_requires 'Test::More';
+build_requires 'Test::Perl::Critic'          => 0;
 
 requires 'YAML::Syck' => 0;
 requires 'Tapper::Base';
