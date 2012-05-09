@@ -1,5 +1,5 @@
 package Tapper::Base;
-
+# ABSTRACT: Tapper - Common functions for all Tapper classes
 
 use Moose;
 use Fcntl;
@@ -7,19 +7,9 @@ use LockFile::Simple;
 
 use common::sense;
 
-
 use 5.010;
 
 with 'MooseX::Log::Log4perl';
-
-
-=head1 NAME
-
-Tapper::Base - Tapper - Common functions for all Tapper classes
-
-=cut
-
-our $VERSION = '3.000010';
 
 =head1 SYNOPSIS
 
@@ -161,28 +151,5 @@ sub log_and_exec
         return (0, $output) if wantarray;
         return 0;
 }
-
-
-=head1 AUTHOR
-
-AMD OSRC Tapper Team, C<< <tapper at amd64.org> >>
-
-=head1 BUGS
-
-Please report any bugs or feature requests to C<bug-tapper-base at rt.cpan.org>, or through
-the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Tapper-Base>.  I will be notified, and then you'll
-automatically be notified of progress on your bug as I make changes.
-
-
-=head1 ACKNOWLEDGEMENTS
-
-
-=head1 COPYRIGHT & LICENSE
-
-Copyright 2008-2011 AMD OSRC Tapper Team, all rights reserved.
-
-This program is released under the following license: freebsd
-
-=cut
 
 1; # End of Tapper::Base
