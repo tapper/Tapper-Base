@@ -1,6 +1,7 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+        - experimenting around dzil release, just to be sure
 
 4.001.001 2012-05-15
         - big Dist::Zilla roundhouse kick
