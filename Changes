@@ -1,6 +1,7 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+	- sync version with release
 
 4.1.2     2012-05-15
         - experimenting around dzil release, just to be sure
