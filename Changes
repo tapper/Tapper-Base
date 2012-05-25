@@ -2,6 +2,9 @@ Revision history for {{$dist->name}}
 
 {{$NEXT}}
 
+4.0.3     2012-05-25
+	- Retry after Upload Bummer!
+
 4.0.1     2012-05-16
 	- sync version with release
 
