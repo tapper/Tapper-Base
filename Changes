@@ -1,6 +1,7 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+	- explicit deps
 
 4.0.3     2012-05-25
 	- Retry after Upload Bummer!
