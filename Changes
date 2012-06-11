@@ -1,6 +1,7 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+        - fix wrong version tags again
 
 4.1.3     2012-06-07
 	- explicit deps
