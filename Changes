@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+4.0.4     2012-06-11
         - fix wrong version tags again
 
 4.1.3     2012-06-07
