@@ -1,6 +1,7 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+        - assert OS = Unix
 
 4.0.4     2012-06-11
         - fix wrong version tags again
