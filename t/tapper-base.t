@@ -34,7 +34,6 @@ package main;
 
 my $test   = Foo::Test->new();
 SKIP: {
-        
         skip "qx testing requires a knows executable. We work with /bin/sh which has to exist on all POSIX platforms. Win does not have it." if $OSNAME =~ /MS/;
         my $retval = $test->test_log_and_exec('true');
         is($retval, 0, 'Log_and_exec in scalar context');
