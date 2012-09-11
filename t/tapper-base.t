@@ -4,6 +4,7 @@ use warnings;
 use strict;
 use Log::Log4perl;
 use File::Temp;
+use English '-no_match_vars';
 
 my $string = "
 log4perl.rootLogger           = INFO, root
@@ -32,25 +33,28 @@ sub test_log_and_exec
 package main;
 
 my $test   = Foo::Test->new();
-my $retval = $test->test_log_and_exec('true');
-is($retval, 0, 'Log_and_exec in scalar context');
+SKIP: {
+        
+        skip "qx testing requires a knows executable. We work with /bin/sh which has to exist on all POSIX platforms. Win does not have it." if $OSNAME =~ /MS/;
+        my $retval = $test->test_log_and_exec('true');
+        is($retval, 0, 'Log_and_exec in scalar context');
 
-my $ft = File::Temp->new();
-my $filename = $ft->filename;
+        my $ft = File::Temp->new();
+        my $filename = $ft->filename;
 
-$test = Tapper::Base->new();
+        $test = Tapper::Base->new();
 
-local $SIG{CHLD} = 'IGNORE';
+        local $SIG{CHLD} = 'IGNORE';
 
-$retval = $test->run_one({command  => "t/misc_files/sleep.sh",
-                          pid_file => $filename,
-                          argv     => [ 100 ]});
-is($retval, 0, 'Run_one sleep without error');
+        $retval = $test->run_one({command  => "t/misc_files/sleep.sh",
+                                  pid_file => $filename,
+                                  argv     => [ 100 ]});
+        is($retval, 0, 'Run_one sleep without error');
 
-$retval = $test->run_one({command => "t/misc_files/sleep.sh",
-                          pid_file => $filename,
-                          argv    => [ 1 ]});
-is($retval, 0, 'Run_one second sleep without error');
-
+        $retval = $test->run_one({command => "t/misc_files/sleep.sh",
+                                  pid_file => $filename,
+                                  argv    => [ 1 ]});
+        is($retval, 0, 'Run_one second sleep without error');
+}
 
 done_testing();
