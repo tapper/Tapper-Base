@@ -113,8 +113,6 @@ sub makedir
 }
 
 
-=cut
-
 =head2 log_and_exec
 
 Execute a given command. Make sure the command is logged if requested and none
