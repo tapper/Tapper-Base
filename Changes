@@ -1,6 +1,7 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+        - No log_and_exec testing on Windows
 
 4.0.5     2012-07-05
         - assert OS = Unix
