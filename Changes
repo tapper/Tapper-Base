@@ -1,6 +1,7 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+        - fix decreasing version number (*sigh*)
 
 4.1.1     2012-10-19
         - upload again
