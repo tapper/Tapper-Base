@@ -45,5 +45,5 @@ not_in_file_ok(ChangeLog =>
                "placeholder date/time"       => qr(Date/time)
               );
 
-module_boilerplate_ok('lib/Tapper/Action.pm');
+module_boilerplate_ok('lib/Tapper/Base.pm');
 
