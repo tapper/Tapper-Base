@@ -1,4 +1,6 @@
 #! perl
+# PODNAME: tapper-action
+# ABSTRACT: Tapper - MCP action handling
 
 use strict;
 use warnings;
