@@ -4,6 +4,8 @@ pm_to_blib*
 MANIFEST
 META.yml
 MYMETA.yml
+MYMETA.json
+Makefile
 inc/
 .*
 !.gitignore
