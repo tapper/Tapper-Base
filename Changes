@@ -1,7 +1,18 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
-        - dzil pluginbundle TAPPER
+        - use dzil pluginbundle TAPPER
+        - [FIX] add Perl boilerplate
+        - [FIX] add error logging to OSRC resume
+        - [FIX] never return from run function
+        - [FIX] delete message when handled
+        - [FIX] initialise Log4perl
+        - [FEAT] resume now respects "after"
+        - [FEAT] scripts that use Tapper::Action
+        - [TEST] Perl::Critic
+        - [TEST] unit test for Tapper::Action
+        - [TEST] activate log4perl in test
+        - [TEST] faster poll time during test
 
 4.1.4     2012-10-19
         - fix decreasing version number (*sigh*)
