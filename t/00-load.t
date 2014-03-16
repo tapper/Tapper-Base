@@ -6,4 +6,4 @@ BEGIN {
         use_ok( 'Tapper::Base' );
 }
 
-diag( "Testing Tapper::Action $Tapper::Action::VERSION, Perl $], $^X" );
+diag( "Testing Tapper::Base $Tapper::Base::VERSION, Perl $], $^X" );

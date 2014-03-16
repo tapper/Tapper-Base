@@ -2,8 +2,6 @@ package Tapper::Base;
 # ABSTRACT: Tapper - Common functions for all Tapper classes
 
 use Moose;
-use Fcntl;
-use LockFile::Simple;
 
 use common::sense;
 
@@ -18,77 +16,6 @@ with 'MooseX::Log::Log4perl';
  extends 'Tapper::Base';
 
 =head1 FUNCTIONS
-
-=head2 kill_instance
-
-Kill the process whose id is in the given pidfile.
-
-@param string - pid file name
-
-@return success - 0
-@return error   - error string
-
-=cut
-
-sub kill_instance
-{
-        my ($self, $pid_file) = @_;
-
-        # try to kill previous incarnations
-        if ((-e $pid_file) and open(my $fh, "<", $pid_file)) {{
-                my $pid = do {local $\; <$fh>}; # slurp
-                ($pid) = $pid =~ m/(\d+)/;
-                last unless $pid;
-                kill 15, $pid;
-                sleep(2);
-                kill 9, $pid;
-                close $fh;
-        }}
-        return 0;
-
-}
-
-=head2 run_one
-
-Run one instance of the given command. Kill previous incarnations if necessary.
-
-@param hash ref - {command  => command to execute,
-                   pid_file => pid file containing the ID of last incarnation,
-                   argv     => array ref containg (optional) arguments}
-
-
-@return success - 0
-@return error   - error string
-
-=cut
-
-sub run_one
-{
-        my ($self, $conf) = @_;
-
-        my $command  = $conf->{command};
-        my $pid_file = $conf->{pid_file};
-        my @argv     = @{$conf->{argv} // [] } ;
-
-        $self->kill_instance($pid_file);
-
-        return qq(Can not execute "$command" because it's not an executable) unless -x $command;
-        my $pid = fork();
-        return qq(Can not execute "$command". Fork failed: $!) unless defined $pid;
-
-        if ($pid == 0) {
-                exec $command, @argv;
-                exit 0;
-        }
-
-        return 0 unless $pid_file;
-        open(my $fh, ">", $pid_file) or return qq(Can not open "$pid_file" for pid $pid:$!);
-        print $fh $pid;
-        close $fh;
-        return 0;
-}
-
-
 
 =head2 makedir
 
