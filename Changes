@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+5.0.0     2015-12-18
         - use dzil pluginbundle TAPPER
         - [FIX] add Perl boilerplate
         - [FIX] add error logging to OSRC resume
