@@ -3,8 +3,6 @@ package Tapper::Base;
 
 use Moose;
 
-use common::sense;
-
 use 5.010;
 
 with 'MooseX::Log::Log4perl';
